@@ -23,7 +23,7 @@ def strtobool(_string):
     elif _string in ['n', 'no', 'f', 'false', 'off', '0', 0]:
         return False
     else:
-        raise ZenossAPIClientError(f"Invalid boolean value: {_string}")
+        raise CherwellAPIClientError(f"Invalid boolean value: {_string}")
 
 
 class Client(object):
