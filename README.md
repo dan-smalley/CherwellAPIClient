@@ -1,5 +1,11 @@
 # Cherwell API Client
 
+![Tests badge](https://github.com/dan-smalley/CherwellAPIClient/actions/workflows/test_and_lint.yml/badge.svg) 
+[![Documentation Status](https://readthedocs.org/projects/cherwellapiclient/badge/?version=latest)](https://cherwellapiclient.readthedocs.io/en/latest/?badge=latest) 
+![PyPI - Version](https://img.shields.io/pypi/v/CherwellAPIClient?logo=pypi&label=PyPI)
+![GitHub Release](https://img.shields.io/github/v/release/dan-smalley/CherwellAPIClient?include_prereleases&logo=github&label=Release)
+![TestPyPI - Version](https://img.shields.io/pypi/v/CherwellAPIClient?pypiBaseUrl=https%3A%2F%2Ftest.pypi.org&logo=pypi&label=TestPyPI) 
+
 > NOTE: This module is inspired by the excellent [ZenossAPIClient](https://github.com/Zuora-TechOps/ZenossAPIClient) by Zuora-TechOps and the [fork](https://github.com/boblickj/ZenossAPIClient) contributed by boblickj.
 > 
 > My own fork of that project is available via [PyPI as zenAPIClient](https://pypi.org/project/zenAPIClient/) 
