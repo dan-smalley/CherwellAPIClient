@@ -22,7 +22,8 @@ class RelationshipsRouter(CherwellRouter):
         relationhsip_dict = {}
 
         if ci is not None:
-            tr = TranslationRouter(self.api_url, self.api_headers, self.api_user, self.api_password, self.api_client_id, self.ssl_verify)
+            tr = TranslationRouter(
+                self.api_url, self.api_headers, self.api_user, self.api_password, self.api_client_id, self.ssl_verify)
             ci_id = tr.get_ci_id(ci)
         if ci_id is not None:
             ci_fields = self._router_request(
@@ -49,7 +50,8 @@ class RelationshipsRouter(CherwellRouter):
         result = self._router_request(
             method='GET',
             api_version='api/V1',
-            action='getrelatedbusinessobject/parentbusobid/{0}/parentbusobrecid/{1}/relationshipid/{2}?allfields=true&usedefaultgrid=false'.format(parent_ci_id, parent_rec_id, relationship_id)
+            action='getrelatedbusinessobject/parentbusobid/{0}/parentbusobrecid/{1}/relationshipid/{2}?allfields=true&usedefaultgrid=false'.format(
+                parent_ci_id, parent_rec_id, relationship_id)
         )
 
         related_objects = {
@@ -59,5 +61,3 @@ class RelationshipsRouter(CherwellRouter):
         }
 
         return related_objects
-
-

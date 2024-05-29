@@ -25,9 +25,6 @@ class CherwellRouter(object):
         self.api_password = password
         self.api_client_id = client_id
 
-        # Debug output
-        # print(f'url={url}\n', f'headers={headers}\n', f'ssl_verify={ssl_verify}\n', f'api_version={api_version}\n', f'action={action}\n', f'timeout={timeout}\n', f'maxattempts={maxattempts}\n', f'user={user}\n', f'token_expire_minutes={token_expire_minutes}\n', f'password={password}\n', f'client_id={client_id}')
-
     def load_token(self):
         tries = 0
         while tries < self.api_maxattempts:
@@ -36,7 +33,8 @@ class CherwellRouter(object):
                     'POST',
                     '{0}/token'.format(self.api_url),
                     headers={"Content-Type": "application/x-www-form-urlencoded"},
-                    data='grant_type=password&client_id={0}&username={1}&password={2}'.format(self.api_client_id, self.api_user, self.api_password),
+                    data='grant_type=password&client_id={0}&username={1}&password={2}'.format(
+                        self.api_client_id, self.api_user, self.api_password),
                     verify=self.ssl_verify,
                     timeout=self.api_timeout
                     )
@@ -46,10 +44,11 @@ class CherwellRouter(object):
                 # Atempt to display the failure reason from Cherwell
                 try:
                     logging.warning("Query failure reason from Cherwell: %s" % response['result']['msg'])
-                except:
+                except Exception:
                     pass
                 if tries == self.api_maxattempts:
-                    raise CherwellAPIClientAuthenticationError('Unable to connect to Cherwell for new token {0}: {1}'.format(self.api_url, e))
+                    raise CherwellAPIClientAuthenticationError('Unable to connect to Cherwell for new token {0}: {1}'.format(
+                        self.api_url, e))
                 tries += 1
 
         if response.ok:
@@ -59,13 +58,14 @@ class CherwellRouter(object):
                 os.environ['zen_rt'] = bytes.decode(base64.b64encode(bytes(response_json['refresh_token'], 'utf-8')))
                 os.environ['zen_tt'] = str(time())
             except Exception as exc:
-                raise CherwellAPIClientAuthenticationError('Token request failed: {}'.format(response_json))
+                raise CherwellAPIClientAuthenticationError('Token request failed: {0}\n{1}'.format(response_json, exc))
 
         else:
             raise CherwellAPIClientAuthenticationError('Token request failed, no response data returned!')
 
     def refresh_token(self, ):
-        # TODO: For now we can keep getting new tokens, but we can reduce the amount of passing of passwords by using a refresh token
+        # TODO: For now we can keep getting new tokens,
+        #  but we can reduce the amount of passing of passwords by using a refresh token
         pass
 
     def _router_request(self, data=None, api_version=None, action=None, method='GET', response_timeout=None):
@@ -79,7 +79,7 @@ class CherwellRouter(object):
 
         # Check for unexpired token
         if 'zen_ct' not in os.environ or 'zen_tt' not in os.environ:
-            token = self.load_token()
+            self.load_token()
         if float(os.environ['zen_tt']) < time() - (self.api_token_expire_minutes * 60):
             logging.warning('Token is about to expire, refreshing')
             self.load_token()
@@ -93,7 +93,7 @@ class CherwellRouter(object):
         while tries < self.api_maxattempts:
             try:
                 response = requests.request(method,
-                    '{0}/{1}/{2}'.format(self.api_url, api_version, action),
+                                            '{0}/{1}/{2}'.format(self.api_url, api_version, action),
                                             headers=self.api_headers,
                                             data=json.dumps(data).encode('utf-8'),
                                             verify=self.ssl_verify,
@@ -101,11 +101,12 @@ class CherwellRouter(object):
                                             )
                 break
             except ConnectionError as e:
-                logging.warning('Error calling Cherwell API attempt %i/%i\n    Error: %s\n    Request data: %s' % (tries, self.api_maxattempts, e, data))
+                logging.warning('Error calling Cherwell API attempt %i/%i\n    Error: %s\n    Request data: %s' % (
+                    tries, self.api_maxattempts, e, data))
                 # Atempt to display the failure reason from Cherwell
                 try:
                     logging.warning("Query failure reason from Cherwell: %s" % response['result']['msg'])
-                except:
+                except Exception:
                     pass
                 if tries == self.api_maxattempts:
                     raise CherwellAPIClientError('Unable to connect to Cherwell server {0}: {1}'.format(self.api_url, e))

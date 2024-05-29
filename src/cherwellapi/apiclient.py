@@ -7,7 +7,6 @@ Cherwell API Client Class
 import inspect
 import os
 from distutils.util import strtobool
-import urllib3
 
 
 class CherwellAPIClientError(Exception):
@@ -56,7 +55,6 @@ class Client(object):
                 ssl_verify = os.environ['CHERWELL_SSL_VERIFY']
             else:
                 ssl_verify = True
-
 
         if isinstance(ssl_verify, str):
             ssl_verify = bool(strtobool(ssl_verify))
@@ -139,9 +137,9 @@ class Client(object):
         )
 
         for method in inspect.getmembers(
-            getattr(self.routers[router],
-                    router_class),
-            predicate=inspect.isroutine
+                getattr(self.routers[router],
+                        router_class),
+                predicate=inspect.isroutine
         ):
             if method[0].startswith('__'):
                 continue
