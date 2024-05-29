@@ -5,7 +5,6 @@ Cherwell Search Router
 """
 
 from cherwellapi.routers import CherwellRouter
-from cherwellapi.apiclient import CherwellAPIClientError
 
 
 class SearchRouter(CherwellRouter):
@@ -43,5 +42,3 @@ class SearchRouter(CherwellRouter):
         }
 
         return search_results
-
-

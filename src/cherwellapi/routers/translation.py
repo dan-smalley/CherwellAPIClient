@@ -8,8 +8,9 @@ The first time a resource is queried the results are stored in the router allowi
 queries within the same session to use cached data for rapid retrieval.
 """
 import logging
-from cherwellapi.routers import CherwellRouter
+
 from cherwellapi.apiclient import CherwellAPIClientError
+from cherwellapi.routers import CherwellRouter
 
 
 class TranslationRouter(CherwellRouter):
@@ -65,9 +66,10 @@ class TranslationRouter(CherwellRouter):
             self.ci_index['cis'][ci_id]['fields'] = {'names': {}, 'display_names': {}}
 
             for field in ci_fields['fieldDefinitions']:
-                self.ci_index['cis'][ci_id]['fields']['names'].update({field['name']: field['fieldId'].rsplit('FI:', 1)[1]})
-                self.ci_index['cis'][ci_id]['fields']['display_names'].update({field['displayName']: field['fieldId'].rsplit('FI:', 1)[1]})
-
+                self.ci_index['cis'][ci_id]['fields']['names'].update(
+                    {field['name']: field['fieldId'].rsplit('FI:', 1)[1]})
+                self.ci_index['cis'][ci_id]['fields']['display_names'].update(
+                    {field['displayName']: field['fieldId'].rsplit('FI:', 1)[1]})
 
     def get_ci_id(self, ci):
         """
